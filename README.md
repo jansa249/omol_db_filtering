@@ -21,7 +21,8 @@ The pipeline performs three main tasks:
 ├── phosphate_summary.py    # Checks phosphate group presence
 ├── queries.py              # SMARTS patterns for chemical matching
 ├── environment.yml         # Conda environment configuration
-└── output_filtered_data/   # (Generated) Stores processed results
+└── output_filtered_data/   # [Generated] Stores processed coordinates
+└── analysis_results/   # [Generated] Stores analysis results
 ```
 
 ## Setup
@@ -31,7 +32,7 @@ The extracted directory shoul be named `./train_4M` and contain 79 `.aselmdb` an
 
 > [!NOTE]
 > **Performance Note:** The __`filter_and_extract.py`__ script takes approximately **3 minutes per `.aselmdb` file**.
-> *To quickly test the pipeline or get a feel for the molecules, we recommend initially running the script with only a small subset (1-2 files) in the `train_4M/` folder.*
+> *To quickly test the pipeline or get a feel for the molecules, I recommend initially running the script with only a small subset (1-3 files) in the `train_4M/` folder.*
 
 This project uses Conda for dependency management to ensure reproducibility with RDKit and ASE.
 
@@ -51,23 +52,53 @@ conda env create -f environment.yml
 - Activate the environment:
 
 ```bash
-conda activate <env_name>
+conda activate omol25_db
 ```
 
 ## Usage
 ### 1. Data Preparation
 
-Place your raw `.aselmdb` database files into a directory named `train_4M/` in the project root.
+Make sure you downloaded the OMOL25 subset and extracted it to a directory named `train_4M/` in the project root.
 (Note: This directory is ignored by Git).
+
 ### 2. Extraction Pipeline
 
 Run the extraction script to process the raw databases. This filters molecules (keeping only dimers with specific elements) and generates the index CSV.
+
 
 ```bash
 python filter_and_extract.py
 ```
 Input: `train_4M/*.aselmdb`
 Output: `output_filtered_data/molecule_index.csv` and `output_filtered_data/coordinates/`
+
+The filters can be adjusted in the `filter_pipeline` function:
+
+```python
+def filter_pipeline(structure, mol_info):
+    n_components, mol_data = mol_info
+    
+    # 1. Filter by data_id
+    if structure.data.get('data_id') != 'biomolecules':
+        return False
+    
+    # 2. Filter by component size (e.g., dimer)
+    if n_components != 2:
+        return False
+    
+    # 3. Filter by heavy atoms per component (ignores e.g., ethanol or water)
+    if not all(m['heavy_count'] > 5 for m in mol_data):
+        return False
+        
+    # 4. Filter by elements
+    allowed = {'C', 'H', 'N', 'O', 'S', 'P'}
+    # Composition string parsing
+    present_elements = set(re.findall(r'[A-Z][a-z]?', structure.data.composition))
+    if not present_elements.issubset(allowed):
+        return False
+
+    return True
+```
 
 ### 3. Analysis & Validation
 
