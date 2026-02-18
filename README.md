@@ -1,4 +1,8 @@
-# Biomolecular Structure Analysis Pipeline
+# Biomolecular Structure OMOL25 Analysis Pipeline
+
+<p align="center">
+  <img src="./github_banner.png" width="100%" alt="Molecular Dimer Banner">
+</p>
 
 ## Overview
 This project provides a complete workflow for processing, filtering, and analyzing large datasets of biomolecular structures (specifically dimers containing nucleotides) stored in ASE database files (`.aselmdb`).
@@ -27,12 +31,26 @@ The pipeline performs three main tasks:
 
 ## Setup
 
-Download the OMOL25 4 million random molecule subset [here](https://dl.fbaipublicfiles.com/opencatalystproject/data/omol/250514/train_4M.tar.gz) and extract it.
-The extracted directory shoul be named `./train_4M` and contain 79 `.aselmdb` and `.aselmdb-lock` files.
+> [!CAUTION]
+> **Large Data Warning:** The OMOL25 4M subset is approximately **19 GB** compressed and significantly larger once extracted. Ensure you have at least 50-60 GB of free disk space before proceeding.
+
+### 1. Download the Data
+   Visit the [facebook Hugginface](https://huggingface.co/facebook/OMol25/blob/main/DATASET.md) to view the full dataset documentation.
+   
+   Direct download link: [train_4M.tar.gz (19 GB)](https://dl.fbaipublicfiles.com/opencatalystproject/data/omol/250514/train_4M.tar.gz)
+
+### 2. Extraction
+   Extract the archive into the project root. The directory must be named `train_4M/` for the scripts to find it.
+   The extracted directory shoul be named `./train_4M` and contain 79 `.aselmdb` and `.aselmdb-lock` files.
+   ```bash
+   tar -xvzf train_4M.tar.gz
+   ```
 
 > [!NOTE]
 > **Performance Note:** The __`filter_and_extract.py`__ script takes approximately **3 minutes per `.aselmdb` file**.
 > *To quickly test the pipeline or get a feel for the molecules, I recommend initially running the script with only a small subset (1-3 files) in the `train_4M/` folder.*
+
+### 3. Create the project directory
 
 This project uses Conda for dependency management to ensure reproducibility with RDKit and ASE.
 
