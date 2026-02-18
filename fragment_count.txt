@@ -1,0 +1,14 @@
+--- Fragment Analysis ---
+Total entries analyzed: 69327
+
+Breakdown of total components per row:
+total_parts
+2    68907
+3      413
+4        7
+Name: count, dtype: int64
+
+Found 420 entries with multiple components.
+Detailed list saved to 'investigate_multiplets.csv'
+Generating grid plot for up to 100 multiplets...
+✅ Grid plot saved to multiplets_grid.png
