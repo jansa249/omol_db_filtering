@@ -1,0 +1,17 @@
+# Ignore all files by default
+*
+
+!*/
+
+!*.py
+!*.csv
+!.gitignore
+!README.md
+
+# Ignore database and large files
+*.tar.gz
+*.aselmdb
+*.aselmdb-lock
+*.png
+*.xyz/
+**/*.xyz/
