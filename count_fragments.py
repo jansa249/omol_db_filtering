@@ -7,7 +7,8 @@ from rdkit.Chem import Draw, rdDepictor
 # --- CONFIGURATION ---
 CSV_INPUT = Path('./output_filtered_data/molecule_index.csv')
 OUTPUT_GRID = Path('multiplets_grid.png')
-MAX_MOLS_TO_PLOT = 100
+MAX_MOLS_TO_PLOT = 6
+MOLS_PER_ROW = 2
 
 def analyze_smiles_fragments(csv_path):
     # 1. Load and Clean
@@ -64,12 +65,12 @@ def analyze_smiles_fragments(csv_path):
                 rdDepictor.Compute2DCoords(mol)
                 mols_to_draw.append(mol)
                 # Legend shows ID and the part distribution (e.g., 1+2 parts)
-                legends.append(f"ID: {row['id']}\n({row['parts_1']}+{row['parts_2']} parts)")
+                legends.append(f"{row['dataset_part']}{row['id']}\n({row['parts_1']}+{row['parts_2']} parts)")
 
         if mols_to_draw:
             img = Draw.MolsToGridImage(
                 mols_to_draw,
-                molsPerRow=5,
+                molsPerRow=MOLS_PER_ROW,
                 subImgSize=(400, 400),
                 legends=legends
             )
