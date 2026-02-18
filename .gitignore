@@ -1,6 +1,5 @@
 # Ignore all files by default
 *
-*.out
 
 !*/
 
@@ -9,6 +8,7 @@
 !.gitignore
 !README.md
 !*.yml
+!github_banner.png
 
 # Ignore database and large files
 *.tar.gz
@@ -17,3 +17,6 @@
 *.png
 *.xyz/
 **/*.xyz/
+
+*.out
+banner.py
