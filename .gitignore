@@ -13,6 +13,7 @@
 !*/
 
 !*.py
+!*.txt
 !*.csv
 !.gitignore
 !*.yml
