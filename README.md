@@ -12,7 +12,7 @@ The pipeline performs three main tasks:
 2.  **Structural Validation:** Analyzes connectivity and fragmentation to ensure data quality.
 3.  **Chemical Analysis:** Classifies molecules by substructure (Nucleobases, Sugars, Phosphates) and generates statistical reports on dataset homogeneity.
 
-**Note:** The raw database files (large binaries, `.xyz` directories) are excluded from this repository via `.gitignore` to maintain a lightweight codebase.
+**Note:** The raw database files (large binaries, `.xyz` directories) are excluded from this repository via `.gitignore`.
 
 ## Repository Structure
 
@@ -31,11 +31,11 @@ The pipeline performs three main tasks:
 
 ## Setup
 
-> [!CAUTION]
-> **Large Data Warning:** The OMOL25 4M subset is approximately **19 GB** compressed and significantly larger once extracted. Ensure you have at least 50-60 GB of free disk space before proceeding.
+> [!WARNING]
+> **Large Data:** The OMOL25 4M subset is approximately **19 GB** compressed and about **22 GB** extracted. Ensure you have enough of free disk space before proceeding. The generated `output_filtered_data` is about 1.7 GB with the applied filters.
 
 ### 1. Download the Data
-   Visit the [facebook Hugginface](https://huggingface.co/facebook/OMol25/blob/main/DATASET.md) to view the full dataset documentation.
+   Visit the [Facebook Hugginface site](https://huggingface.co/facebook/OMol25/blob/main/DATASET.md) to view the full dataset documentation.
    
    Direct download link: [train_4M.tar.gz (19 GB)](https://dl.fbaipublicfiles.com/opencatalystproject/data/omol/250514/train_4M.tar.gz)
 
@@ -47,19 +47,21 @@ The pipeline performs three main tasks:
    ```
 
 > [!NOTE]
-> **Performance Note:** The __`filter_and_extract.py`__ script takes approximately **3 minutes per `.aselmdb` file**.
+> **Performance:** The __`filter_and_extract.py`__ script takes approximately **3 minutes per `.aselmdb` file**.
 > *To quickly test the pipeline or get a feel for the molecules, I recommend initially running the script with only a small subset (1-3 files) in the `train_4M/` folder.*
 
-### 3. Create the project directory
+### 3. Project directory
 
 This project uses Conda for dependency management to ensure reproducibility with RDKit and ASE.
 
 - Clone the repository:
 
 ```bash
-git clone [https://github.com/yourusername/your-repo-name.git](https://github.com/yourusername/your-repo-name.git)
-cd your-repo-name
+git clone https://github.com/jansa249/omol_db_filtering.git
+cd omol_db_filtering
 ```
+
+### 4. Environment
 
 - Create the environment:
 
@@ -76,13 +78,12 @@ conda activate omol25_db
 ## Usage
 ### 1. Data Preparation
 
-Make sure you downloaded the OMOL25 subset and extracted it to a directory named `train_4M/` in the project root.
-(Note: This directory is ignored by Git).
+Make sure you downloaded the OMOL25 subset and extracted it to a directory named `train_4M/` in the project root (simply the directory you cloned).
+(Note: The `train_4M` directory is ignored by Git).
 
 ### 2. Extraction Pipeline
 
 Run the extraction script to process the raw databases. This filters molecules (keeping only dimers with specific elements) and generates the index CSV.
-
 
 ```bash
 python filter_and_extract.py
@@ -144,6 +145,6 @@ python count_fragments.py
 
 The pipeline generates several key outputs in analysis_results/ and output_filtered_data/:
 - `output_filtered_data/molecule_index.csv`: Master list of all processed IDs and their SMILES.
+- `output_filtered_data/data*/[ID]_[COMPOSITION]/complex.xyz` and `~/ component_*.xyz`: Extracted 3D coordinates for every filtered molecule.
 - `analysis_results/matches_*.csv`: Subsets of data matching specific queries (e.g., Adenine, Guanine).
 - `analysis_results/grid_*.png`: Visual grids of molecular structures for quick inspection.
-- `output_filtered_data/data*/[ID]_[COMPOSITION]/complex.xyz` and `~/ component_*.xyz`: Extracted 3D coordinates for every filtered molecule.
