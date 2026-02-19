@@ -51,7 +51,7 @@ def analyze_smiles_fragments(csv_path):
         
         # Take a sample if there are too many
         sample_size = min(len(multiplets), MAX_MOLS_TO_PLOT)
-        plot_df = multiplets.sample(n=sample_size, random_state=42)
+        plot_df = multiplets.sample(n=sample_size)
         
         mols_to_draw = []
         legends = []

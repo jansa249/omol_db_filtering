@@ -5,6 +5,7 @@ QUERY_DICT = {
     'cytosine' : 'N1~C~C~C(~[NH2])~N~C1(~O)',
     'dribose_n' : 'O~C~C1~C(~O)~C~C(~N)~O1',
     'dribose' : 'C~C1~C(~O)~C~C~O1',
+    'ribose' : 'C~C1~C(~O)~C(~O)~C~O1',
     'phosphate' : 'P(~O)(~O)(~O)(~O)',
     # 'phosphate' : 'P(~O)(~O)(~O)',
 }
