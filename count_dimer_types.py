@@ -110,9 +110,10 @@ new_order = matrix["other"].sort_values(ascending=False).head(TOP_ROWS).index.to
 
 # --- DRAWING RANDOM SAMPLES ---
 print("Generating random molecule galleries...")
-for i_cat in new_order:
-    for j_cat in new_order:
+for i, i_cat in enumerate(new_order):
+    for j_cat in new_order[:i+1]:
         pair_key = tuple(sorted([i_cat, j_cat], key=lambda x: categories.index(x)))
+        print(pair_key)
         sample_list = dimer_store[pair_key]['samples']
         
         if not sample_list: continue
