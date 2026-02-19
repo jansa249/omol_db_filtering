@@ -13,7 +13,6 @@ NUM_SAMPLES = 4  # Number of random samples per category pair
 OUTPUT_IMG_DIR = './analysis_results/category_galleries'
 os.makedirs(OUTPUT_IMG_DIR, exist_ok=True)
 
-# ... [Keep your classify_sugar and classify_smiles functions here] ...
 # Convert strings to Mol objects once for efficiency
 BASES = ['adenine', 'guanine', 'uracthym', 'cytosine']
 BASE_MOLS = [Chem.MolFromSmarts(QUERY_DICT[base]) for base in BASES]
@@ -104,9 +103,37 @@ for _, row in df.iterrows():
             }
 
 # --- MATRIX VISUALIZATION ---
-# [Your existing matrix plotting code here]
-new_order = matrix["other"].sort_values(ascending=False).head(TOP_ROWS).index.tolist()
-# ... (rest of the plot logic) ...
+matrix_viz = matrix.loc[new_order, new_order]
+data = matrix_viz.values
+
+fig, ax = plt.subplots(figsize=(10, 8))
+im = ax.imshow(data, cmap='YlGn')
+
+ax.xaxis.tick_top()
+ax.xaxis.set_label_position('top')
+ax.set_xticks(np.arange(TOP_ROWS))
+ax.set_yticks(np.arange(TOP_ROWS))
+ax.set_xticklabels(new_order)
+ax.set_yticklabels(new_order)
+
+plt.setp(ax.get_xticklabels(), rotation=45, ha="left", rotation_mode="anchor")
+
+for i in range(TOP_ROWS):
+    for j in range(TOP_ROWS):
+        val = data[i, j]
+        # Change text color based on background intensity
+        color = "white" if val > (data.max() / 2) else "black"
+        ax.text(j, i, int(val), ha="center", va="center", color=color)
+
+cbar = ax.figure.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+cbar.ax.set_ylabel("Dimer Count", rotation=-90, va="bottom")
+
+ax.set_title("Dimer Interaction Matrix (Top 7 Sorted by Noise)", fontsize=14, pad=50)
+fig.tight_layout()
+
+# Save the matrix image
+plt.savefig('./analysis_results/dimer_matrix.png', bbox_inches='tight')
+plt.show()
 
 # --- DRAWING RANDOM SAMPLES ---
 print("Generating random molecule galleries...")
