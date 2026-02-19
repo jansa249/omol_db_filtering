@@ -127,6 +127,6 @@ for i, i_cat in enumerate(new_order):
 
         if mols:
             img = Draw.MolsToGridImage(mols, molsPerRow=2, subImgSize=(400, 400), legends=labels)
-            img.save(f"{OUTPUT_IMG_DIR}/{i_cat}_vs_{j_cat}.png")
+            img.save(f"{OUTPUT_IMG_DIR}/{i_cat}_{j_cat}.png")
 
 print("Done! Galleries represent a random distribution of each category.")
