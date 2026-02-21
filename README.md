@@ -21,12 +21,14 @@ The pipeline performs three main tasks:
 ├── filter_and_extract.py   # Core ETL script: ASE db -> Filter -> SMILES/XYZ
 ├── analysis.py             # Main analysis logic (substructure matching)
 ├── count_fragments.py      # Quality control: checks for fragmented molecules
-├── homogeneity.py          # Statistical check for dataset bias
 ├── phosphate_summary.py    # Checks phosphate group presence
+├── count_dimer_types.py    # Calculates ocurrence of different dimer categories
+├── homogeneity.py          # Statistical check for dataset bias
+├── distance_analysis.py    # Analysis of minimal intermolecular distance
 ├── queries.py              # SMARTS patterns for chemical matching
 ├── environment.yml         # Conda environment configuration
-└── output_filtered_data/   # [Generated] Stores processed coordinates
-└── analysis_results/   # [Generated] Stores analysis results
+├── output_filtered_data/   # [Generated] Stores processed coordinates
+└── analysis_results/       # [Generated] Stores analysis results
 ```
 
 ## Setup
@@ -141,6 +143,18 @@ Fragment Quality Control: Checks for molecules that have broken into unexpected 
 python count_fragments.py
 ```
 
+Type Interaction Matrix: Finds different types of monomers in the complexes based on queries.py
+
+```bash
+python count_dimer_types.py
+```
+
+Analysis of distances: Computes the distribution of closest distances between heavy atom s in the complexed molecules
+
+```bash
+python distance_analysis.py
+```
+
 ## Outputs
 
 The pipeline generates several key outputs in analysis_results/ and output_filtered_data/:
@@ -148,3 +162,5 @@ The pipeline generates several key outputs in analysis_results/ and output_filte
 - `output_filtered_data/data*/[ID]_[COMPOSITION]/complex.xyz` and `~/ component_*.xyz`: Extracted 3D coordinates for every filtered molecule.
 - `analysis_results/matches_*.csv`: Subsets of data matching specific queries (e.g., Adenine, Guanine).
 - `analysis_results/grid_*.png`: Visual grids of molecular structures for quick inspection.
+- `analysis_results/distance_distribution.png`: Plot of closest intermolecule contacts in the set
+- `analysis_results/distance_extremes/*.xyz`: Coordinates of closest structures calculated by `distance_analysis.py`
