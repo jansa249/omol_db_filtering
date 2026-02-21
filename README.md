@@ -19,6 +19,7 @@ The pipeline performs three main tasks:
 ```text
 .
 ├── filter_and_extract.py   # Core ETL script: ASE db -> Filter -> SMILES/XYZ
+|
 ├── analysis.py             # Main analysis logic (substructure matching)
 ├── count_fragments.py      # Quality control: checks for fragmented molecules
 ├── phosphate_summary.py    # Checks phosphate group presence
@@ -26,7 +27,9 @@ The pipeline performs three main tasks:
 ├── homogeneity.py          # Statistical check for dataset bias
 ├── distance_analysis.py    # Analysis of minimal intermolecular distance
 ├── queries.py              # SMARTS patterns for chemical matching
+|
 ├── environment.yml         # Conda environment configuration
+|
 ├── output_filtered_data/   # [Generated] Stores processed coordinates
 └── analysis_results/       # [Generated] Stores analysis results
 ```
