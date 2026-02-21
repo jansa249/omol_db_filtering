@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 import random
 import pandas as pd
 import numpy as np
@@ -10,8 +10,8 @@ from queries import QUERY_DICT
 # --- CONFIGURATION ---
 TOP_ROWS = 7
 NUM_SAMPLES = 4  # Number of random samples per category pair
-OUTPUT_IMG_DIR = './analysis_results/category_galleries'
-os.makedirs(OUTPUT_IMG_DIR, exist_ok=True)
+OUTPUT_IMG_DIR = Path('./analysis_results/category_galleries')
+OUTPUT_IMG_DIR.mkdir(exist_ok=True)
 
 # Convert strings to Mol objects once for efficiency
 BASES = ['adenine', 'guanine', 'uracthym', 'cytosine']
@@ -103,37 +103,36 @@ for _, row in df.iterrows():
             }
 
 # --- MATRIX VISUALIZATION ---
+# --- MATRIX VISUALIZATION ---
+# Ensure the TOP_ROWS doesn't exceed the actual size of the matrix
+actual_top = min(TOP_ROWS, len(matrix))
+new_order = matrix["other"].sort_values(ascending=False).head(actual_top).index.tolist()
 matrix_viz = matrix.loc[new_order, new_order]
 data = matrix_viz.values
 
-fig, ax = plt.subplots(figsize=(10, 8))
+print(f'Creating matrix visualization for {actual_top} categories...')
+
+fig, ax = plt.subplots(figsize=(7, 7)) # Slightly wider for labels
 im = ax.imshow(data, cmap='YlGn')
 
+# Formatting
 ax.xaxis.tick_top()
-ax.xaxis.set_label_position('top')
-ax.set_xticks(np.arange(TOP_ROWS))
-ax.set_yticks(np.arange(TOP_ROWS))
-ax.set_xticklabels(new_order)
-ax.set_yticklabels(new_order)
+ax.set_xticks(np.arange(actual_top))
+ax.set_yticks(np.arange(actual_top))
+ax.set_xticklabels(new_order, fontsize=14, rotation=45, ha="left")
+ax.set_yticklabels(new_order, fontsize=14)
 
-plt.setp(ax.get_xticklabels(), rotation=45, ha="left", rotation_mode="anchor")
-
-for i in range(TOP_ROWS):
-    for j in range(TOP_ROWS):
-        val = data[i, j]
-        # Change text color based on background intensity
+# Adding text annotations
+for i in range(actual_top):
+    for j in range(actual_top):
+        val = int(data[i, j])
         color = "white" if val > (data.max() / 2) else "black"
-        ax.text(j, i, int(val), ha="center", va="center", color=color)
+        ax.text(j, i, f"{val:,}", ha="center", va="center", color=color, fontsize=12)
 
-cbar = ax.figure.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
-cbar.ax.set_ylabel("Dimer Count", rotation=-90, va="bottom")
-
-ax.set_title("Dimer Interaction Matrix (Top 7 Sorted by Noise)", fontsize=14, pad=50)
-fig.tight_layout()
-
-# Save the matrix image
-plt.savefig('./analysis_results/dimer_matrix.png', bbox_inches='tight')
-plt.show()
+print('Saving figure...')
+# Use bbox_inches='tight' instead of tight_layout()
+plt.savefig('./analysis_results/dimer_matrix.png', dpi=150, bbox_inches='tight') 
+plt.close(fig)
 
 # --- DRAWING RANDOM SAMPLES ---
 print("Generating random molecule galleries...")
