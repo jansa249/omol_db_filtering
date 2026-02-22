@@ -19,6 +19,6 @@
 !.gitignore
 !*.yml
 !README.md
-!github_banner.png
+!.assets/github_banner.png
 
 banner.py
