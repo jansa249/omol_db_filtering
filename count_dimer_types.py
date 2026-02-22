@@ -84,7 +84,6 @@ for _, row in df.iterrows():
     dimer_store[pair_key]['count'] += 1
     current_count = dimer_store[pair_key]['count']
     
-    # If we have space, add it
     if len(dimer_store[pair_key]['samples']) < NUM_SAMPLES:
         dimer_store[pair_key]['samples'].append({
             'smiles': f"{row['smiles1']}.{row['smiles2']}",
@@ -103,7 +102,6 @@ for _, row in df.iterrows():
             }
 
 # --- MATRIX VISUALIZATION ---
-# --- MATRIX VISUALIZATION ---
 # Ensure the TOP_ROWS doesn't exceed the actual size of the matrix
 actual_top = min(TOP_ROWS, len(matrix))
 new_order = matrix["other"].sort_values(ascending=False).head(actual_top).index.tolist()
@@ -112,7 +110,7 @@ data = matrix_viz.values
 
 print(f'Creating matrix visualization for {actual_top} categories...')
 
-fig, ax = plt.subplots(figsize=(7, 7)) # Slightly wider for labels
+fig, ax = plt.subplots(figsize=(7, 7))
 im = ax.imshow(data, cmap='YlGn')
 
 # Formatting

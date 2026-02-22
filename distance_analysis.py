@@ -58,9 +58,11 @@ def run_distance_analysis():
     BINS = 50
     hist, bins = np.histogram(df['min_dist'], bins=BINS)
 
+    # LOG HISTOGRAM
     # plt.bar((bins[1:]+bins[:-1])/2, np.log10(hist), width=np.max(df['min_dist'])/BINS, color=(1,0.49,0), edgecolor='white', alpha=0.8)
     # plt.ylabel('$\log_{10}(\mathrm{count})$')
     
+    # LINERAR HISTOGRAM
     plt.bar((bins[1:]+bins[:-1])/2, hist, width=np.max(df['min_dist'])/BINS, color=(1,0.49,0), edgecolor='white', alpha=0.8)
     plt.ylabel('$\mathrm{count}$')
 
