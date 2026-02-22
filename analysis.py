@@ -3,7 +3,7 @@ import pandas as pd
 from pathlib import Path
 from rdkit import Chem
 from rdkit.Chem import Draw, rdDepictor
-from queries import QUERY_DICT
+from queries import QUERY_DICT  # expandable 'queries.py' list
 
 # --- CONFIGURATION ---
 CSV_INPUT = Path('./output_filtered_data/molecule_index.csv')
@@ -14,14 +14,14 @@ N_SAMPLES_VIZ = 100
 PHOS_QUERY = Chem.MolFromSmarts(QUERY_DICT['phosphate'])
 
 def run_pipeline():
-    # 1. Load Data Once
+    # 1. Load Data
     print(f"--- Loading {CSV_INPUT.name} ---")
     df = pd.read_csv(CSV_INPUT, sep=';')
     df.columns = df.columns.str.strip()
     
     summary_stats = []
     
-    # 2. Loop through all Substructures in QUERY_DICT
+    # 2. Loop through all Substructures in QUERY_DICT (queries.py)
     for sub_name, smarts in QUERY_DICT.items():
         if sub_name == 'phosphate': continue # Skip the checker itself
         
