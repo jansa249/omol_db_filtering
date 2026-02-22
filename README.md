@@ -1,7 +1,7 @@
 # Biomolecular Structure OMOL25 Analysis Pipeline
 
 <p align="center">
-  <img src="./github_banner.png" width="100%" alt="Molecular Dimer Banner">
+  <img src="./.assets/github_banner.png" width="100%" alt="Molecular Dimer Banner">
 </p>
 
 ## Overview
