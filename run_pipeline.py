@@ -1,9 +1,9 @@
 import subprocess
 import sys
 
-# Define the workflow in order
+# Workflow of analysis scripts
+# Make sure you run 'filter_and_extract.py' first
 WORKFLOW = [
-    "filter_and_extract.py",
     "analysis.py",
     "count_fragments.py",
     "distance_analysis.py",
