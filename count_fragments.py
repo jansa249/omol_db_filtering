@@ -6,7 +6,7 @@ from rdkit.Chem import Draw, rdDepictor
 
 # --- CONFIGURATION ---
 CSV_INPUT = Path('./output_filtered_data/molecule_index.csv')
-OUTPUT_GRID = Path('multiplets_grid.png')
+OUTPUT_GRID = Path('./analysis_results/multiplets_grid.png')
 MAX_MOLS_TO_PLOT = 6
 MOLS_PER_ROW = 2
 
@@ -43,8 +43,8 @@ def analyze_smiles_fragments(csv_path):
         print(f"\nFound {len(multiplets)} entries with multiple components.")
         
         # Save CSV for record keeping
-        multiplets.to_csv('investigate_multiplets.csv', sep=';', index=False)
-        print("Detailed list saved to 'investigate_multiplets.csv'")
+        multiplets.to_csv('./analysis_results/investigate_multiplets.csv', sep=';', index=False)
+        print("Detailed list saved to './analysis_results/investigate_multiplets.csv'")
 
         # 4. Generate Grid Plot
         print(f"Generating grid plot for up to {MAX_MOLS_TO_PLOT} multiplets...")
