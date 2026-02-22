@@ -11,24 +11,22 @@ from ase.db import connect
 from ase.neighborlist import natural_cutoffs, NeighborList
 from ase.io import write
 from rdkit import Chem
-from rdkit.Chem import rdDetermineBonds
 
 # --- CONFIGURATION ---
-INPUT_DIR = Path('./train_4M')
-OUTPUT_DIR = Path('./output_filtered_data')
+CUTOFF_MULTIPLIER = 0.91                            # multiplier for 'natural_cutoffs', which determines bonding
+INPUT_DIR = Path('./train_4M')                      # dir with .aselmdb files
+OUTPUT_DIR = Path('./output_filtered_data')         # dir where coords and 'molecule_index.csv' will be written to
 OUTPUT_XYZ_DIR = OUTPUT_DIR / 'coordinates'
 CSV_LOG_PATH = OUTPUT_DIR / 'molecule_index.csv'
 
-OUTPUT_XYZ_DIR.mkdir(exist_ok=True, parents=True)
 
-CUTOFF_MULTIPLIER = 0.91
+OUTPUT_XYZ_DIR.mkdir(exist_ok=True, parents=True)
 
 # --- UTILS ---
 
 def ase_to_smiles(atoms):
     """
     Constructs a SMILES string using ONLY heavy atoms and single bonds.
-    This is crash-proof even for 'bad' geometries.
     """
     # 1. Initialize an editable RDKit molecule
     mol = Chem.RWMol()
@@ -42,7 +40,6 @@ def ase_to_smiles(atoms):
             ase_to_rd_idx[i] = rd_idx
             
     # 3. Use ASE NeighborList to find bonds
-    # We use a 1.1x multiplier for 'natural' distances
     cutoffs = [c * CUTOFF_MULTIPLIER for c in natural_cutoffs(atoms)]
     nl = NeighborList(cutoffs, self_interaction=False, bothways=False)
     nl.update(atoms)
@@ -59,57 +56,39 @@ def ase_to_smiles(atoms):
     # 5. Finalize and convert to SMILES
     res_mol = mol.GetMol()
     
-    # We sanitize but turn off valence checks so 'bad' geometries don't crash it
+    # Sanitization for bad geometries
     try:
-        # This will calculate rings and connectivity without failing on 5-valent carbons
         res_mol.UpdatePropertyCache(strict=False)
         Chem.FastFindRings(res_mol)
         return Chem.MolToSmiles(res_mol)
     except:
         return "SMILES_ERROR"
 
-# def ase_to_smiles(atoms):
-#     """Converts an ASE Atoms object to a SMILES string via RDKit."""
-#     # Create an empty editable molecule
-#     mol = Chem.RWMol()
-#     node_to_idx = {}
-#
-#     # Add atoms
-#     for i, atom in enumerate(atoms):
-#         rd_idx = mol.AddAtom(Chem.Atom(int(atom.number)))
-#         node_to_idx[i] = rd_idx
-#
-#     # Use ASE neighbor list to find bonds for RDKit
-#     cutoffs = natural_cutoffs(atoms)
-#     nl = NeighborList(cutoffs, self_interaction=False, bothways=False)
-#     nl.update(atoms)
-#
-#     for i in range(len(atoms)):
-#         indices, offsets = nl.get_neighbors(i)
-#         for j in indices:
-#             # We assume single bonds for filtering/searching purposes 
-#             # as ASE doesn't store bond order natively.
-#             mol.AddBond(node_to_idx[i], node_to_idx[int(j)], Chem.BondType.SINGLE)
-#
-#     try:
-#         smiles = Chem.MolToSmiles(mol.GetMol())
-#         return smiles
-#     except:
-#         return "ERROR"
+# --- MOLECULAR GRAPH CONSTRUCTION ---
 
 def get_molecule_info(structure):
-    """Returns component count, heavy atom counts, and atom indices."""
+    """Returns component count, heavy atom counts, and atom indices for the ASE entry."""
+
+    # 1. Get coordinates from entry
     atoms = structure.toatoms()
+
+    # 2. Calculate NeighborList by distances and cutoffs
     cutoffs = [c * CUTOFF_MULTIPLIER for c in natural_cutoffs(atoms)]
     nl = NeighborList(cutoffs, self_interaction=False, bothways=True)
     nl.update(atoms)
+
+    # 3. Connectivity matrix from NeighborList
     matrix = nl.get_connectivity_matrix()
     
+    # 4. Calculate number of disconnected components and indices
+    # which atom belongs to what part
     n_components, component_array = sparse.csgraph.connected_components(matrix)
     
+    # 5. Filter for heavy atoms
     atomic_numbers = atoms.get_atomic_numbers()
     is_heavy = atomic_numbers > 1
     
+    # 6. Generate output data
     mol_data = []
     for mol_id in range(n_components):
         indices = np.where(component_array == mol_id)[0]
@@ -158,6 +137,7 @@ def main():
         csv_writer = csv.writer(csvfile, delimiter=';')
         csv_writer.writerow(['dataset_part', 'id', 'smiles1', 'smiles2'])
 
+        # Go through every database part
         for input_path in input_paths:
             print(f'Processing {input_path.name}...')
             part_name = input_path.stem
@@ -190,7 +170,7 @@ def main():
                             smi = ase_to_smiles(m['atoms_obj'])
                             smiles_list.append(smi)
                         
-                        # 3. Write to CSV
+                        # 3. Write database part, id, and SMILES to CSV
                         csv_writer.writerow([part_name, structure.id, *smiles_list])
 
     print(f"Workflow Complete. Results in {OUTPUT_DIR}")
