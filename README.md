@@ -195,6 +195,9 @@ The pipeline generates several key outputs in analysis_results/ and output_filte
 │   ├── matches_[SUBSTRUCT].csv     # Table of complexes containing SUBSTRUCT
 │   ├── grid_[SUBSTRUCT].png        # Figures of random complexes containing SUBSTRUCT
 │   │
+│   │                               # OUTPUT FROM phosphate_summary.py
+│   ├── grid_no_phosphates.png      # Grid of structures NOT containing phosphate
+│   │
 │   │                               # OUTPUT FROM count_multiplets.py
 │   ├── multiplets.csv              # Table of complexes of more than 2 components
 │   ├── grid_multiplets.png         # Figures of random complexes of more than 2 components
