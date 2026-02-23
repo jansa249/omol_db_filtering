@@ -189,27 +189,29 @@ The pipeline generates several key outputs in analysis_results/ and output_filte
 │               ├── complex.xyz     # Coordinates of the complex (with forces)
 │               └── component_*.xyz # Coordinates of the components (no forces)
 │
-├── analysis_results/               # ANALYSIS OUTPUT
-│   │
-│   │                               # OUTPUT FROM analysis.py
-│   ├── matches_[SUBSTRUCT].csv     # Table of complexes containing SUBSTRUCT
-│   ├── grid_[SUBSTRUCT].png        # Figures of random complexes containing SUBSTRUCT
-│   │
-│   │                               # OUTPUT FROM phosphate_summary.py
-│   ├── grid_no_phosphates.png      # Grid of structures NOT containing phosphate
-│   │
-│   │                               # OUTPUT FROM count_multiplets.py
-│   ├── multiplets.csv              # Table of complexes of more than 2 components
-│   ├── grid_multiplets.png         # Figures of random complexes of more than 2 components
-│   │
-│   │                               # OUTPUT FROM count_dimer_types.py
-│   ├── dimer_matrix.png            # Figure of interaction matrix of monomer types
-│   ├── dimer_galleries/            # Figures of random interaction complexes
-│   │   └── [M1]_[M2].png           # for monomer types M1 and M2
-│   │
-│   │                               # OUTPUT FROM distance_analysis.py
-│   ├── distance_distribution.png   # Histogram of minimal heavy atom dists
-│   ├── distance_extremes/          # Dir of 10 closest and farthest complexes
-│   │   └── [CAT]_[DIST]_[ID].xyz   # Coordinates of closest/farthest complexes
+└── analysis_results/               # ANALYSIS OUTPUT
+    │
+    │                               # OUTPUT FROM analysis.py
+    ├── matches_[SUBSTRUCT].csv     # Table of complexes containing SUBSTRUCT
+    ├── grid_[SUBSTRUCT].png        # Figures of random complexes containing SUBSTRUCT
+    │
+    │                               # OUTPUT FROM phosphate_summary.py
+    ├── grid_no_phosphates.png      # Grid of structures NOT containing phosphate
+    │
+    │                               # OUTPUT FROM count_multiplets.py
+    ├── multiplets.csv              # Table of complexes of more than 2 components
+    ├── grid_multiplets.png         # Figures of random complexes of more than 2 components
+    │
+    │                               # OUTPUT FROM count_dimer_types.py
+    ├── dimer_matrix.png            # Figure of interaction matrix of monomer types
+    ├── dimer_galleries/            # Figures of random interaction complexes
+    │   └── [M1]_[M2].png           # for monomer types M1 and M2
+    │
+    │                               # OUTPUT FROM distance_analysis.py
+    ├── distance_hist.png           # Histogram of minimal heavy atom dists
+    ├── distance_hist_log10.png     # Log histogram of minimal heavy atom dists
+    ├── distance_data_cache.csv     # Table of ID and closest distance
+    └── distance_extremes/          # Dir of 10 closest and farthest complexes
+        └── [CAT]_[DIST]_[ID].xyz   # Coordinates of closest/farthest complexes
 ```
 
