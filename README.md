@@ -21,7 +21,7 @@ The pipeline performs three main tasks:
 ├── filter_and_extract.py   # Core extraction script: ASE db -> Filter -> SMILES/XYZ
 │
 ├── analysis.py             # Main analysis logic (substructure matching)
-├── count_fragments.py      # Quality control: checks for fragmented molecules
+├── count_multiplets.py     # Quality control: checks for fragmented molecules
 ├── phosphate_summary.py    # Checks phosphate group presence
 ├── count_dimer_types.py    # Calculates occurrence of different dimer categories
 ├── homogeneity.py          # Statistical check for dataset bias
@@ -146,7 +146,7 @@ Fragment Quality Control: Checks for molecules that have broken into unexpected 
 *The filters for 2 component structures are not perfect so it might recognize close 3-molecule structures incorrectly*
 
 ```bash
-python count_fragments.py
+python count_multiplets.py
 ```
 
 Type Interaction Matrix: Finds different types of monomers in the complexes based on queries.py
@@ -188,24 +188,8 @@ The pipeline generates several key outputs in analysis_results/ and output_filte
 │   ├── matches_[SUBSTRUCT].csv     # Table of complexes containing SUBSTRUCT
 │   ├── grid_[SUBSTRUCT].png        # Figures of random complexes containing SUBSTRUCT
 │   │
-│   │                               # OUTPUT FROM count_fragments.py
-│   ├── multiplets.csv         # Figures of random complexes of more than 2 components
+│   │                               # OUTPUT FROM count_multiplets.py
+│   ├── multiplets.csv              # Table of complexes of more than 2 components
 │   ├── grid_multiplets.png         # Figures of random complexes of more than 2 components
-│   └── coordinates/                # Dir with filtered coordinates
-│       └── data00**/               # for each .aselmdb file
-│           └── [ID]_[COMPOSITION]/ # for each entry in file
-│               ├── complex.xyz     # Coordinates of the complex (with forces)
-│               └── component_*.xyz # Coordinates of the components (no forces)
-├── count_fragments.py      # Quality control: checks for fragmented molecules
-├── phosphate_summary.py    # Checks phosphate group presence
-├── count_dimer_types.py    # Calculates occurrence of different dimer categories
-├── homogeneity.py          # Statistical check for dataset bias
-├── distance_analysis.py    # Analysis of minimal intermolecular distance
-├── queries.py              # SMARTS patterns for chemical matching
-|
-├── environment.yml         # Conda environment configuration
-|
-├── output_filtered_data/   # [Generated] Stores processed coordinates
-└── analysis_results/       # [Generated] Stores analysis results
 ```
 
