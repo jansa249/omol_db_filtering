@@ -167,16 +167,6 @@ Analysis of distances: Computes the distribution of closest distances between he
 python distance_analysis.py
 ```
 
-## Outputs
-
-The pipeline generates several key outputs in analysis_results/ and output_filtered_data/:
-- `output_filtered_data/molecule_index.csv`: Master list of all processed IDs and their SMILES.
-- `output_filtered_data/data*/[ID]_[COMPOSITION]/complex.xyz` and `~/ component_*.xyz`: Extracted 3D coordinates for every filtered molecule.
-- `analysis_results/matches_*.csv`: Subsets of data matching specific queries (e.g., Adenine, Guanine).
-- `analysis_results/grid_*.png`: Visual grids of molecular structures for quick inspection.
-- `analysis_results/distance_distribution.png`: Plot of closest intermolecule contacts in the set
-- `analysis_results/distance_extremes/*.xyz`: Coordinates of closest structures calculated by `distance_analysis.py`
-
 ## Output Structure
 
 ```text
