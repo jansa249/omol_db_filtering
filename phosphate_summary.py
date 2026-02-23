@@ -14,7 +14,7 @@ except ImportError:
 # --- CONFIGURATION ---
 HITS_DIR = Path('.')
 FILE_PATTERN = './analysis_results/matches_*.csv'
-OUTPUT_GRID = Path('./grid_no_phosphates.png')
+OUTPUT_GRID = Path('./analysis_results/grid_no_phosphates.png')
 MAX_GRID_MOLS = 100
 MOLS_PER_ROW = 10
 
