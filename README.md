@@ -184,6 +184,7 @@ The pipeline generates several key outputs in analysis_results/ and output_filte
 │               └── component_*.xyz # Coordinates of the components (no forces)
 │
 ├── analysis_results/               # Analysis output
+│   │
 │   │                               # OUTPUT FROM analysis.py
 │   ├── matches_[SUBSTRUCT].csv     # Table of complexes containing SUBSTRUCT
 │   ├── grid_[SUBSTRUCT].png        # Figures of random complexes containing SUBSTRUCT
@@ -191,5 +192,10 @@ The pipeline generates several key outputs in analysis_results/ and output_filte
 │   │                               # OUTPUT FROM count_multiplets.py
 │   ├── multiplets.csv              # Table of complexes of more than 2 components
 │   ├── grid_multiplets.png         # Figures of random complexes of more than 2 components
+│   │
+│   │                               # OUTPUT FROM count_dimer_types.py
+│   ├── dimer_matrix.png            # Figure of interaction matrix of monomer types
+│   ├── dimer_galleries/            # Figures of random interaction complexes
+│   │   └── [M1]_[M2].png           # for monomer types M1 and M2
 ```
 
