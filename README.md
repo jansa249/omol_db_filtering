@@ -130,7 +130,7 @@ def filter_pipeline(structure, mol_info):
 > The following scripts can be run from the `run_pipeline.py` script.
 
 Once the data is extracted, run the analysis tools in any order:
-Substructure Search: Identifies nucleobases and generates grid visualizations for a random subset of the nucleobase set in `analysis_results`.
+Substructure Search: Identifies nucleobases and generates grid visualizations for a random subset of the nucleobase set in `analysis_results/grid_[SUBSTRUCT].png` and saves table `matches_[SUBSTRUCT].csv` with IDs and SMILES.
 
 ```bash
 python analysis.py
@@ -140,6 +140,12 @@ Homogeneity Check: Calculates the distribution of Sugar/Base/Phosphate profiles 
 
 ```bash
 python homogeneity.py
+```
+
+Phosphate Check: Calculates the prevalence of phosphate in structures containing substructures from `queries.py` by looping through `analysis_results/matches_*.csv` and generates random sample image of structures in `analysis_results/grid_no_phosphates.png`.
+
+```bash
+python phosphate_summary.py
 ```
 
 Fragment Quality Control: Checks for molecules that have broken into unexpected fragments.
@@ -175,7 +181,7 @@ The pipeline generates several key outputs in analysis_results/ and output_filte
 
 ```text
 .
-├── output_filtered_data/           # Core ETL script: ASE db -> Filter -> SMILES/XYZ
+├── output_filtered_data/           # OUTPUT FROM filter_and_extract.py
 │   ├── molecule_index.csv          # Table of complexes with ids and SMILES
 │   └── coordinates/                # Dir with filtered coordinates
 │       └── data00**/               # for each .aselmdb file
@@ -183,7 +189,7 @@ The pipeline generates several key outputs in analysis_results/ and output_filte
 │               ├── complex.xyz     # Coordinates of the complex (with forces)
 │               └── component_*.xyz # Coordinates of the components (no forces)
 │
-├── analysis_results/               # Analysis output
+├── analysis_results/               # ANALYSIS OUTPUT
 │   │
 │   │                               # OUTPUT FROM analysis.py
 │   ├── matches_[SUBSTRUCT].csv     # Table of complexes containing SUBSTRUCT
@@ -197,5 +203,10 @@ The pipeline generates several key outputs in analysis_results/ and output_filte
 │   ├── dimer_matrix.png            # Figure of interaction matrix of monomer types
 │   ├── dimer_galleries/            # Figures of random interaction complexes
 │   │   └── [M1]_[M2].png           # for monomer types M1 and M2
+│   │
+│   │                               # OUTPUT FROM distance_analysis.py
+│   ├── distance_distribution.png   # Histogram of minimal heavy atom dists
+│   ├── distance_extremes/          # Dir of 10 closest and farthest complexes
+│   │   └── [CAT]_[DIST]_[ID].xyz   # Coordinates of closest/farthest complexes
 ```
 
