@@ -2,6 +2,8 @@ from pathlib import Path
 import random
 import pandas as pd
 import numpy as np
+import matplotlib
+matplotlib.use('Agg') # Force non-interactive backend
 import matplotlib.pyplot as plt
 from rdkit import Chem
 from rdkit.Chem import Draw
