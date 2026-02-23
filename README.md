@@ -18,18 +18,18 @@ The pipeline performs three main tasks:
 
 ```text
 .
-├── filter_and_extract.py   # Core ETL script: ASE db -> Filter -> SMILES/XYZ
-|
+├── filter_and_extract.py   # Core extraction script: ASE db -> Filter -> SMILES/XYZ
+│
 ├── analysis.py             # Main analysis logic (substructure matching)
 ├── count_fragments.py      # Quality control: checks for fragmented molecules
 ├── phosphate_summary.py    # Checks phosphate group presence
-├── count_dimer_types.py    # Calculates ocurrence of different dimer categories
+├── count_dimer_types.py    # Calculates occurrence of different dimer categories
 ├── homogeneity.py          # Statistical check for dataset bias
 ├── distance_analysis.py    # Analysis of minimal intermolecular distance
 ├── queries.py              # SMARTS patterns for chemical matching
-|
+│
 ├── environment.yml         # Conda environment configuration
-|
+│
 ├── output_filtered_data/   # [Generated] Stores processed coordinates
 └── analysis_results/       # [Generated] Stores analysis results
 ```
@@ -46,7 +46,7 @@ The pipeline performs three main tasks:
 
 ### 2. Extraction
    Extract the archive into the project root. The directory must be named `train_4M/` for the scripts to find it.
-   The extracted directory shoul be named `./train_4M` and contain 79 `.aselmdb` and `.aselmdb-lock` files.
+   The extracted directory should be named `./train_4M` and contain 79 `.aselmdb` and `.aselmdb-lock` files.
    ```bash
    tar -xvzf train_4M.tar.gz
    ```
@@ -126,6 +126,9 @@ def filter_pipeline(structure, mol_info):
 
 ### 3. Analysis & Validation
 
+> [!TIP]
+> The following scripts can be run from the `run_pipeline.py` script.
+
 Once the data is extracted, run the analysis tools in any order:
 Substructure Search: Identifies nucleobases and generates grid visualizations for a random subset of the nucleobase set in `analysis_results`.
 
@@ -152,7 +155,7 @@ Type Interaction Matrix: Finds different types of monomers in the complexes base
 python count_dimer_types.py
 ```
 
-Analysis of distances: Computes the distribution of closest distances between heavy atom s in the complexed molecules
+Analysis of distances: Computes the distribution of closest distances between heavy atoms in the complexed molecules
 
 ```bash
 python distance_analysis.py
@@ -167,3 +170,42 @@ The pipeline generates several key outputs in analysis_results/ and output_filte
 - `analysis_results/grid_*.png`: Visual grids of molecular structures for quick inspection.
 - `analysis_results/distance_distribution.png`: Plot of closest intermolecule contacts in the set
 - `analysis_results/distance_extremes/*.xyz`: Coordinates of closest structures calculated by `distance_analysis.py`
+
+## Output Structure
+
+```text
+.
+├── output_filtered_data/           # Core ETL script: ASE db -> Filter -> SMILES/XYZ
+│   ├── molecule_index.csv          # Table of complexes with ids and SMILES
+│   └── coordinates/                # Dir with filtered coordinates
+│       └── data00**/               # for each .aselmdb file
+│           └── [ID]_[COMPOSITION]/ # for each entry in file
+│               ├── complex.xyz     # Coordinates of the complex (with forces)
+│               └── component_*.xyz # Coordinates of the components (no forces)
+│
+├── analysis_results/               # Analysis output
+│   │                               # OUTPUT FROM analysis.py
+│   ├── matches_[SUBSTRUCT].csv     # Table of complexes containing SUBSTRUCT
+│   ├── grid_[SUBSTRUCT].png        # Figures of random complexes containing SUBSTRUCT
+│   │
+│   │                               # OUTPUT FROM count_fragments.py
+│   ├── multiplets.csv         # Figures of random complexes of more than 2 components
+│   ├── grid_multiplets.png         # Figures of random complexes of more than 2 components
+│   └── coordinates/                # Dir with filtered coordinates
+│       └── data00**/               # for each .aselmdb file
+│           └── [ID]_[COMPOSITION]/ # for each entry in file
+│               ├── complex.xyz     # Coordinates of the complex (with forces)
+│               └── component_*.xyz # Coordinates of the components (no forces)
+├── count_fragments.py      # Quality control: checks for fragmented molecules
+├── phosphate_summary.py    # Checks phosphate group presence
+├── count_dimer_types.py    # Calculates occurrence of different dimer categories
+├── homogeneity.py          # Statistical check for dataset bias
+├── distance_analysis.py    # Analysis of minimal intermolecular distance
+├── queries.py              # SMARTS patterns for chemical matching
+|
+├── environment.yml         # Conda environment configuration
+|
+├── output_filtered_data/   # [Generated] Stores processed coordinates
+└── analysis_results/       # [Generated] Stores analysis results
+```
+
