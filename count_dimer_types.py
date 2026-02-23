@@ -10,7 +10,7 @@ from queries import QUERY_DICT
 # --- CONFIGURATION ---
 TOP_ROWS = 7
 NUM_SAMPLES = 4  # Number of random samples per category pair
-OUTPUT_IMG_DIR = Path('./analysis_results/category_galleries')
+OUTPUT_IMG_DIR = Path('./analysis_results/dimer_galleries')
 OUTPUT_IMG_DIR.mkdir(exist_ok=True)
 
 # Convert strings to Mol objects once for efficiency

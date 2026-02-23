@@ -5,7 +5,7 @@ import sys
 # Make sure you run 'filter_and_extract.py' first
 WORKFLOW = [
     "analysis.py",
-    "count_fragments.py",
+    "count_multiplets.py",
     "distance_analysis.py",
     # "phosphate_summary.py",
     # "homogeneity.py",
