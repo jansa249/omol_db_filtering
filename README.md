@@ -18,20 +18,21 @@ The pipeline performs three main tasks:
 
 ```text
 .
-├── filter_and_extract.py   # Core extraction script: ASE db -> Filter -> SMILES/XYZ
+├── filter_and_extract.py       # Core extraction script: ASE db -> Filter -> SMILES/XYZ
 │
-├── analysis.py             # Main analysis logic (substructure matching)
-├── count_multiplets.py     # Quality control: checks for fragmented molecules
-├── phosphate_summary.py    # Checks phosphate group presence
-├── count_dimer_types.py    # Calculates occurrence of different dimer categories
-├── homogeneity.py          # Statistical check for dataset bias
-├── distance_analysis.py    # Analysis of minimal intermolecular distance
-├── queries.py              # SMARTS patterns for chemical matching
+├── analysis.py                 # Main analysis logic (substructure matching)
+├── count_multiplets.py         # Quality control: checks for fragmented molecules
+├── phosphate_summary.py        # Checks phosphate group presence
+├── phosphate_connectivity.py   # Checks phosphate connectivity (protonation, ...)
+├── count_dimer_types.py        # Calculates occurrence of different dimer categories
+├── homogeneity.py              # Statistical check for dataset bias
+├── distance_analysis.py        # Analysis of minimal intermolecular distance
+├── queries.py                  # SMARTS patterns for chemical matching
 │
-├── environment.yml         # Conda environment configuration
+├── environment.yml             # Conda environment configuration
 │
-├── output_filtered_data/   # [Generated] Stores processed coordinates
-└── analysis_results/       # [Generated] Stores analysis results
+├── output_filtered_data/       # [Generated] Stores processed coordinates
+└── analysis_results/           # [Generated] Stores analysis results
 ```
 
 ## Setup
@@ -148,6 +149,12 @@ Phosphate Check: Calculates the prevalence of phosphate in structures containing
 python phosphate_summary.py
 ```
 
+Phosphorus Connectivity: Groups the structures containing phosphorus by their connectivity (phosphate, phosphite, esters, protonation, ...) from the SMILES in `output_filtered_data/molecule_index.csv`. Outputs `analysis_results/phosphate_connectivity.txt` listing the number of each combination found, `phosphorus_distribution.png` showing the number of the 10 most prevalent combinations, and `analysis_results/phosphate_structures/[GROUP]` with coordinates of the phosphorus compounds.
+
+```bash
+python phosphate_connectivity.py
+```
+
 Fragment Quality Control: Checks for molecules that have broken into unexpected fragments.
 *The filters for 2 component structures are not perfect so it might recognize close 3-molecule structures incorrectly*
 
@@ -187,6 +194,13 @@ python distance_analysis.py
     │
     │                               # OUTPUT FROM phosphate_summary.py
     ├── grid_no_phosphates.png      # Grid of structures NOT containing phosphate
+    │
+    │                               # OUTPUT FROM phosphate_connectivity.py
+    ├── phosphate_connectivity.txt  # Occurrence of phosphorus moieties
+    ├── phosphorus_distribution.png # Graph of occurrence of moieties
+    ├── phosphate_structures/       # Coordinates
+    │   └── [GROUP]/                # for group (phosphate, phosphite, ...)
+    │       └── [ID]_[COMP].xyz     # for monomer types M1 and M2
     │
     │                               # OUTPUT FROM count_multiplets.py
     ├── multiplets.csv              # Table of complexes of more than 2 components
