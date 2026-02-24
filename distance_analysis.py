@@ -58,19 +58,28 @@ def run_distance_analysis():
     BINS = 50
     hist, bins = np.histogram(df['min_dist'], bins=BINS)
 
-    # LOG HISTOGRAM
-    # plt.bar((bins[1:]+bins[:-1])/2, np.log10(hist), width=np.max(df['min_dist'])/BINS, color=(1,0.49,0), edgecolor='white', alpha=0.8)
-    # plt.ylabel('$\log_{10}(\mathrm{count})$')
+    #LOG HISTOGRAM
+    fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(5,3))
+    ax.bar((bins[1:]+bins[:-1])/2, np.log10(hist), width=np.max(df['min_dist'])/BINS, color=(1,0.49,0), edgecolor='white', alpha=0.8)
+    ax.set_ylabel('$\log_{10}(\mathrm{count})$')
+    ax.axvline(df['min_dist'].median(), color=(0.8,0,0), linestyle='--', label=f'Median: {df["min_dist"].median():.2f} Å')
+    ax.set_xlabel('Distance [Å]')
+    ax.legend()
+    fig.tight_layout()
+    plt.savefig(OUTPUT_DIR / 'distance_hist_log10.png', dpi=600)
+    plt.close(fig)
     
-    # LINERAR HISTOGRAM
-    plt.bar((bins[1:]+bins[:-1])/2, hist, width=np.max(df['min_dist'])/BINS, color=(1,0.49,0), edgecolor='white', alpha=0.8)
-    plt.ylabel('$\mathrm{count}$')
+    # LINEAR HISTOGRAM
+    fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(5,3))
+    ax.bar((bins[1:]+bins[:-1])/2, hist, width=np.max(df['min_dist'])/BINS, color=(1,0.49,0), edgecolor='white', alpha=0.8)
+    ax.set_ylabel('$\mathrm{count}$')
+    ax.axvline(df['min_dist'].median(), color=(0.8,0,0), linestyle='--', label=f'Median: {df["min_dist"].median():.2f} Å')
+    ax.set_xlabel('Distance [Å]')
+    ax.legend()
+    fig.tight_layout()
+    plt.savefig(OUTPUT_DIR / 'distance_hist.png', dpi=600)
+    plt.close()
 
-    plt.axvline(df['min_dist'].median(), color=(0.8,0,0), linestyle='--', label=f'Median: {df["min_dist"].median():.2f} Å')
-    plt.xlabel('Distance [Å]')
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig(OUTPUT_DIR / 'distance_distribution.png', dpi=600)
 
     # 3. PRINT STATS
     print("\n" + "="*65)

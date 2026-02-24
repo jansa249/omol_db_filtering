@@ -1,0 +1,62 @@
+PHOSPHATE ANALYSIS REPORT - 2026-02-24 15:13:47
+============================================================
+Total structures scanned from CSV:  69327
+Molecules containing P:            26744
+Total P centers analyzed:           63019
+------------------------------------------------------------
+COUNT      | CONNECTIVITY TYPE
+------------------------------------------------------------
+45836      | (O)(O)(O-C)(O-H)
+15453      | (O)(O)(O-C)(O-C)
+726        | (O)(O)(O-C)H
+251        | (O)(O-C)(O-H)(O-H)
+177        | (O)(O-C)(O-H)H
+156        | (O)(O)(O)(O-C)
+87         | (O)(O-C)(O-C)(O-H)
+87         | (O)(O)(O-C)(O-P)
+47         | (O)(O)(O)(O-P)
+26         | (O)(O)(O-P)(O-P)
+26         | (O)(O-C)(O-H)(O-P)
+22         | (O)(O)(O-H)(O-P)
+18         | (O)(O-H)(O-H)(O-P)
+15         | (O)(O-H)(O-P)(O-P)
+11         | (O)(O-C)(O-H)
+5          | (O)(O)(O)C
+5          | (O)(O)(O-H)C
+5          | (O-C)(O-H)(O-H)
+4          | (O)(O-C)(O-C)C
+4          | (O)(O)(O-C)
+4          | (O)(O)(O-P)
+4          | (O)(O-H)(O-P)
+4          | (O)(O-H)(O-H-P)(O-P)
+4          | (O)(O-C)(O-C)(O-C)
+4          | (O-C)(O-H)H
+3          | (O)(O)(O-C-H)(O-H)
+3          | (O)(O)(O-C)(O-H-P)
+2          | (O)(O)CC
+2          | (O-H)(O-H)(O-P)
+2          | (O)(O-H)(O-H)
+2          | (O)(O)(O)
+2          | (O)(O-C)(O-C)
+2          | (O)(O)(O-C)C
+1          | CCC
+1          | (O)(O-H)(O-H)H
+1          | (O)(O-C)C
+1          | (O)CCC
+1          | (O)(O)(O-P)H
+1          | (O)(O)(O-H)(O-H-P)
+1          | (O-C)(O-C)(O-C)
+1          | (O)(O)(O)(O-H)
+1          | (O)(O-C)(O-C)H
+1          | (O-C)(O-H)(O-H)(O-P)
+1          | (O)(O)(O-P)C
+1          | Lone-P
+1          | (O)(O)C
+1          | (O)(O-H)(O-P)C
+1          | (O)(O-C)(O-H)C
+1          | (O)(O)(O-H)
+1          | (O)
+1          | (O)(O)(O)(O)
+1          | (O)(O-C)
+1          | (O)(O-H)(O-H)C
+============================================================
