@@ -89,13 +89,6 @@ Make sure you downloaded the OMOL25 subset and extracted it to a directory named
 
 ### 2. Extraction Pipeline
 
-> [!NOTE]
-> This repository provides the prefiltered dataset in the `output_filtered_data/molecule_index.csv` file.
-> If you are using this dataset and dont want to modify the filtering logic in `filter_pipeline`,
-> you can skip `filter_and_extract.py`. As long as `molecule_index.csv` exists in the
-> `output_filtered_data/` directory, you can proceed directly to the __Analysis &
-> Validation__ scripts.
-
 Run the extraction script to process the raw databases. This filters molecules (keeping only dimers with specific elements) and generates the index CSV.
 
 ```bash
