@@ -5,11 +5,12 @@ import sys
 # Make sure you run 'filter_and_extract.py' first
 WORKFLOW = [
     "analysis.py",
+    "homogeneity.py",
+    "phosphate_summary.py",
+    "phosphate_connectivity.py",
     "count_multiplets.py",
-    "distance_analysis.py",
-    # "phosphate_summary.py",
-    # "homogeneity.py",
     "count_dimer_types.py",
+    "distance_analysis.py",
 ]
 
 def run_analysis():
