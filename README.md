@@ -46,7 +46,7 @@ The pipeline performs three main tasks:
 
 ### 2. Extraction
    Extract the archive into the project root. The directory must be named `train_4M/` for the scripts to find it.
-   The extracted directory should be named `./train_4M` and contain 79 `.aselmdb` and `.aselmdb-lock` files.
+   The extracted directory should be named `./train_4M` and contain 80 `.aselmdb` and `.aselmdb-lock` files.
    ```bash
    tar -xvzf train_4M.tar.gz
    ```
