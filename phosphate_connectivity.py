@@ -6,13 +6,14 @@ from ase.neighborlist import neighbor_list
 from collections import Counter
 import tqdm
 from datetime import datetime
+import matplotlib.pyplot as plt
 
 # --- Configuration ---
 CSV_PATH = Path('./output_filtered_data/molecule_index.csv')
 DATA_DIR = Path('./train_4M/')
 OUTPUT_DIR = Path('./analysis_results/phosphate_structures')
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-SUMMARY_PATH = Path("./analysis_results/phosphate_connectivity.txt"
+SUMMARY_PATH = Path("./analysis_results/phosphate_connectivity.txt")
 
 def analyze_phosphate_environments(atoms):
     # Forced cutoffs for unoptimized P-O (2.1A), P-C (2.1A), P-H (1.6A)
@@ -108,3 +109,43 @@ with open(SUMMARY_PATH, "w") as f:
     f.write(final_report)
 
 print(f"Summary written to: {SUMMARY_PATH}")
+
+# --- Visualization with Matplotlib ---
+if stats["combos"]:
+    # Prepare data (sorted by count from most_common)
+    sorted_combos = summary_counts.most_common()
+    types = [item[0] for item in sorted_combos][:10][::-1]
+    counts = [item[1] for item in sorted_combos]
+    total = sum(counts)
+    counts = counts[:10][::-1]
+
+    plt.figure(figsize=(6, len(types) * 0.4 + 2))
+    
+    # Using plain plt with some basic styling
+    bars = plt.barh(types, counts, color=(1,0.49,0), edgecolor='white', height=0.8)
+    
+    plt.xscale('log')
+    plt.xlabel('Occurrence Count (Log Scale)', fontsize=12, fontweight='bold')
+    plt.ylabel('Connectivity Type', fontsize=12, fontweight='bold')
+    plt.title(f'Distribution of P Environments\nN={total}', fontsize=14, pad=20)
+    
+    # Add light grid for log scale readability
+    plt.grid(visible=True, which='both', axis='x', linestyle='--', alpha=0.5)
+    plt.xlim(right=max(counts) * 8)
+
+    # Add count labels next to bars
+    for bar in bars:
+        width = bar.get_width()
+        plt.text(width * 1.1, bar.get_y() + bar.get_height()/2, 
+                 f'{int(width):,}', va='center', fontsize=12)
+
+    plt.tight_layout()
+
+    # Save and Show
+    plot_path = Path("./analysis_results/phosphorus_distribution.png")
+    plt.savefig(plot_path, dpi=300)
+    # plt.show()
+    
+    print(f"Distribution plot saved to: {plot_path}")
+else:
+    print("No Phosphorus types found to graph.")
